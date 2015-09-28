@@ -1,0 +1,9 @@
+{
+	"name": "smichaelsen/fluid-viewhelper-timespan",
+	"description": "TimeSpanViewHelper for Fluid",
+	"autoload": {
+		"psr-4": {
+			"Smichaelsen\\FluidViewHelperTimespan\\": "Classes/"
+		}
+	}
+}
