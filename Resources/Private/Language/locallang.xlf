@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages">
+		<header>
+			<comment>Copy the following labels into your TYPO3 extension.</comment>
+		</header>
+		<body>
+			<trans-unit id="timespan.day">
+				<source>%d day</source>
+			</trans-unit>
+			<trans-unit id="timespan.days">
+				<source>%d days</source>
+			</trans-unit>
+			<trans-unit id="timespan.hour">
+				<source>%d hour</source>
+			</trans-unit>
+			<trans-unit id="timespan.hours">
+				<source>%d hours</source>
+			</trans-unit>
+			<trans-unit id="timespan.minute">
+				<source>%d minute</source>
+			</trans-unit>
+			<trans-unit id="timespan.minutes">
+				<source>%d minutes</source>
+			</trans-unit>
+			<trans-unit id="timespan.month">
+				<source>%d month</source>
+			</trans-unit>
+			<trans-unit id="timespan.months">
+				<source>%d months</source>
+			</trans-unit>
+			<trans-unit id="timespan.second">
+				<source>%d second</source>
+			</trans-unit>
+			<trans-unit id="timespan.seconds">
+				<source>%d seconds</source>
+			</trans-unit>
+			<trans-unit id="timespan.since">
+				<source>%s ago</source>
+			</trans-unit>
+			<trans-unit id="timespan.until">
+				<source>in %s</source>
+			</trans-unit>
+			<trans-unit id="timespan.year">
+				<source>%d year</source>
+			</trans-unit>
+			<trans-unit id="timespan.years">
+				<source>%d years</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
