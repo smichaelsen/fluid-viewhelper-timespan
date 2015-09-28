@@ -1,5 +1,5 @@
 <?php
-namespace Smichaelsen\FluidViewHelperTimeSpan\ViewHelpers;
+namespace Smichaelsen\FluidViewHelperTimespan\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
