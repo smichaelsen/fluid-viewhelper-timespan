@@ -8,7 +8,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Class TimeSpanViewHelper
  *
  * Returns a human readable string stating the time interval between now and the given reference time.
- * Uses the locallang.xml/xlf of $this->extensionName. The LLL keys are:
+ * Uses the locallang.xml/xlf of the current request's extension. The LLL keys are:
  * timespan.day
  * timespan.days
  * timespan.hour
@@ -28,7 +28,7 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  * Example output: 4 days 12 hours 7 minutes and 42 seconds ago
  * Example output: in 4 days 12 hours 7 minutes and 42 seconds
  *
- * TODO: make it possible to use a specific precision. e.g. precision="minutes" won't include the seconds in the output
+ * Inline Usage: {myTime -> m:timeSpan()}
  */
 class TimeSpanViewHelper extends AbstractViewHelper {
 
@@ -40,9 +40,10 @@ class TimeSpanViewHelper extends AbstractViewHelper {
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('extensionName', 'string', 'TYPO3 extension to load the labels from', FALSE);
-		$this->registerArgument('precision', 'string', '');
-		$this->registerArgument('reference', \DateTime::class, 'The reference time', FALSE);
+		$this->registerArgument('extensionName', 'string', 'By default labels will be loaded from the request\'s current extension. Can be overwritten by this attribute.', FALSE);
+		$this->registerArgument('limitUnits', 'integer', 'Limit the amount of displayed units', FALSE, 99);
+		$this->registerArgument('precision', 'string', 'By default the timespan will be diplayed accurately down to the second. Provide "year", "month", "day", "hour" or "minute" to lower the precision.', FALSE, 'second');
+		$this->registerArgument('reference', \DateTime::class, 'The reference time, can also be passed as child content', FALSE);
 	}
 
 	/**
@@ -68,6 +69,9 @@ class TimeSpanViewHelper extends AbstractViewHelper {
 				$messageParts[] = $this->translate('timespan.' . $label . ($value > 1 ? 's' : ''), array($value));
 			}
 			if ($label === $this->arguments['precision']) {
+				break;
+			}
+			if (count($messageParts) === (int)$this->arguments['limitUnits']) {
 				break;
 			}
 		}
