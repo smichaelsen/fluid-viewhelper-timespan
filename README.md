@@ -6,9 +6,7 @@ This package serves a ViewHelper for the TYPO3 templating engine Fluid.
 
 1. Add to your `composer.json`:
 
-    "require": {
-      "smichaelsen/fluid-viewhelper-timespan": "dev-master"
-    }
+`"require": { "smichaelsen/fluid-viewhelper-timespan": "dev-master" }`
 
 2. Copy the file `Resources/Private/Language/locallang.xlf` to your TYPO3 extension (or merge the contents if you already have a locallang file) and adjust/translate the labels.
 
