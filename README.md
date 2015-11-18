@@ -24,4 +24,4 @@ No installation in the TYPO3 extension manager needed, because it is no TYPO3 ex
 
 Output is something like:
 
-User Sebastian registered 3 month 7 days ago.
+User Sebastian registered 3 months 7 days ago.
