@@ -10,7 +10,7 @@ This package serves a ViewHelper for the TYPO3 templating engine Fluid.
       "smichaelsen/fluid-viewhelper-timespan": "dev-master"
     }
 
-2. Copy the file `Resources/Private/Language/locallang.xlf` to your TYPO3 extension (or merge the contents if you already have a locallang file) and adjust/transla the labels
+2. Copy the file `Resources/Private/Language/locallang.xlf` to your TYPO3 extension (or merge the contents if you already have a locallang file) and adjust/translate the labels.
 
 No installation in the TYPO3 extension manager needed, because it is no TYPO3 extension!
 
