@@ -55,6 +55,9 @@ class TimeSpanViewHelper extends AbstractViewHelper {
 		$now = new \DateTime();
 		/** @var \DateTime $reference */
 		$reference = $this->arguments['reference'] ?: $this->renderChildren();
+        if (!$reference instanceof \DateTimeInterface) {
+            return '';
+        }
 		$difference = $now->diff($reference, TRUE);
 		$timeunits = [
 			'year' => $difference->y,
