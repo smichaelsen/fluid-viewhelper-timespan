@@ -29,6 +29,12 @@
 			<trans-unit id="timespan.months">
 				<source>%d months</source>
 			</trans-unit>
+			<trans-unit id="timespan.now">
+				<source>now</source>
+			</trans-unit>
+			<trans-unit id="timespan.recently">
+				<source>recently</source>
+			</trans-unit>
 			<trans-unit id="timespan.second">
 				<source>%d second</source>
 			</trans-unit>
@@ -38,6 +44,15 @@
 			<trans-unit id="timespan.since">
 				<source>%s ago</source>
 			</trans-unit>
+			<trans-unit id="timespan.soon">
+				<source>soon</source>
+			</trans-unit>
+			<trans-unit id="timespan.today">
+				<source>today</source>
+			</trans-unit>
+			<trans-unit id="timespan.tomorrow">
+				<source>tomorrow</source>
+			</trans-unit>
 			<trans-unit id="timespan.until">
 				<source>in %s</source>
 			</trans-unit>
@@ -46,6 +61,9 @@
 			</trans-unit>
 			<trans-unit id="timespan.years">
 				<source>%d years</source>
+			</trans-unit>
+			<trans-unit id="timespan.yesterday">
+				<source>yesterday</source>
 			</trans-unit>
 		</body>
 	</file>

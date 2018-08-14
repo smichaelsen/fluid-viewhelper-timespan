@@ -58,6 +58,9 @@ class TimeSpanViewHelper extends AbstractViewHelper
         $now = new \DateTime();
         /** @var \DateTime $reference */
         $reference = $this->arguments['reference'] ?: $this->renderChildren();
+        if (is_numeric($reference)) {
+            $reference = \DateTime::createFromFormat('U', $reference);
+        }
         if (!$reference instanceof \DateTimeInterface) {
             return '';
         }
@@ -70,18 +73,43 @@ class TimeSpanViewHelper extends AbstractViewHelper
             'minute' => $difference->i,
             'second' => $difference->s,
         ];
-        foreach ($timeunits as $label => $value) {
+        foreach ($timeunits as $unit => $value) {
             if ($value) {
-                $messageParts[] = $this->translate('timespan.' . $label . ($value > 1 ? 's' : ''), array($value));
+                if ($value === 1 && $unit === 'day' && $this->arguments['precision'] === 'day') {
+                    if ($now > $reference) {
+                        $key = 'yesterday';
+                    } else {
+                        $key = 'tomorrow';
+                    }
+                    // "yesterday" and "tomorrow" are returned without wrapping them in "since" or "until"
+                    return $this->translate('timespan.' . $key, [$value]);
+                }
+                $key = $unit . ($value > 1 ? 's' : '');
+                $messageParts[] = $this->translate('timespan.' . $key, [$value]);
             }
-            if ($label === $this->arguments['precision']) {
-                break;
-            }
-            if (count($messageParts) === (int)$this->arguments['limitUnits']) {
+            if ($unit === $this->arguments['precision'] || count($messageParts) === (int)$this->arguments['limitUnits']) {
                 break;
             }
         }
-        return $this->translate('timespan.' . ($now > $reference ? 'since' : 'until'), array(join(' ', $messageParts)));
+        if (count($messageParts) === 0) {
+            if ($this->arguments['precision'] === 'day') {
+                // reference less than a day, but "day" is the precision
+                $key = 'today';
+            } elseif($now == $reference) {
+                // reference is just now
+                $key = 'now';
+            } elseif($now > $reference) {
+                // reference is in the future but less than the provided precision
+                $key = 'recently';
+            } else {
+                // reference is in the future but less than the provided precision
+                $key = 'soon';
+            }
+            // "today", "now", "recently" and "soon" are returned without wrapping them in "since" or "until"
+            return $this->translate('timespan.' . $key);
+        }
+        $key = ($now > $reference ? 'since' : 'until');
+        return $this->translate('timespan.' . $key, [join(' ', $messageParts)]);
     }
 
     /**
