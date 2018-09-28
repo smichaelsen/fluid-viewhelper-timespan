@@ -95,10 +95,10 @@ class TimeSpanViewHelper extends AbstractViewHelper
             if ($this->arguments['precision'] === 'day') {
                 // reference less than a day, but "day" is the precision
                 $key = 'today';
-            } elseif($now == $reference) {
+            } elseif ($now == $reference) {
                 // reference is just now
                 $key = 'now';
-            } elseif($now > $reference) {
+            } elseif ($now > $reference) {
                 // reference is in the future but less than the provided precision
                 $key = 'recently';
             } else {
