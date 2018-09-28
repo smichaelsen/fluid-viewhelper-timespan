@@ -1,6 +1,7 @@
 <?php
 namespace Smichaelsen\FluidViewHelperTimespan\ViewHelpers;
 
+use Smichaelsen\FluidViewHelperTimespan\RelativeTimeUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -32,13 +33,6 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TimeSpanViewHelper extends AbstractViewHelper
 {
-
-    /**
-     * Initialize the arguments.
-     *
-     * @return void
-     * @api
-     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -48,13 +42,9 @@ class TimeSpanViewHelper extends AbstractViewHelper
         $this->registerArgument('reference', \DateTime::class, 'The reference time, can also be passed as child content', FALSE);
     }
 
-    /**
-     * return string
-     */
-    public function render()
+    public function render(): string
     {
         $this->arguments['extensionName'] = $this->arguments['extensionName'] ?: $this->controllerContext->getRequest()->getControllerExtensionName();
-        $messageParts = [];
         $now = new \DateTime();
         /** @var \DateTime $reference */
         $reference = $this->arguments['reference'] ?: $this->renderChildren();
@@ -64,62 +54,9 @@ class TimeSpanViewHelper extends AbstractViewHelper
         if (!$reference instanceof \DateTimeInterface) {
             return '';
         }
-        $difference = $now->diff($reference, TRUE);
-        $timeunits = [
-            'year' => $difference->y,
-            'month' => $difference->m,
-            'day' => $difference->d,
-            'hour' => $difference->h,
-            'minute' => $difference->i,
-            'second' => $difference->s,
-        ];
-        foreach ($timeunits as $unit => $value) {
-            if ($value) {
-                if ($value === 1 && $unit === 'day' && $this->arguments['precision'] === 'day') {
-                    if ($now > $reference) {
-                        $key = 'yesterday';
-                    } else {
-                        $key = 'tomorrow';
-                    }
-                    // "yesterday" and "tomorrow" are returned without wrapping them in "since" or "until"
-                    return $this->translate('timespan.' . $key, [$value]);
-                }
-                $key = $unit . ($value > 1 ? 's' : '');
-                $messageParts[] = $this->translate('timespan.' . $key, [$value]);
-            }
-            if ($unit === $this->arguments['precision'] || count($messageParts) === (int)$this->arguments['limitUnits']) {
-                break;
-            }
-        }
-        if (count($messageParts) === 0) {
-            if ($this->arguments['precision'] === 'day') {
-                // reference less than a day, but "day" is the precision
-                $key = 'today';
-            } elseif ($now == $reference) {
-                // reference is just now
-                $key = 'now';
-            } elseif ($now > $reference) {
-                // reference is in the future but less than the provided precision
-                $key = 'recently';
-            } else {
-                // reference is in the future but less than the provided precision
-                $key = 'soon';
-            }
-            // "today", "now", "recently" and "soon" are returned without wrapping them in "since" or "until"
-            return $this->translate('timespan.' . $key);
-        }
+        $difference = $now->diff($reference);
+        $relativeTimeString = RelativeTimeUtility::getRelativeTimeString($difference, $this->arguments['extensionName'], $this->arguments['precision'], $this->arguments['limitUnits']);
         $key = ($now > $reference ? 'since' : 'until');
-        return $this->translate('timespan.' . $key, [join(' ', $messageParts)]);
+        return LocalizationUtility::translate('timespan.' . $key, $this->arguments['extensionName'], [$relativeTimeString]);
     }
-
-    /**
-     * @param string $id
-     * @param array $arguments
-     * @return string
-     */
-    protected function translate($id, $arguments = NULL)
-    {
-        return LocalizationUtility::translate($id, $this->arguments['extensionName'], $arguments);
-    }
-
 }
