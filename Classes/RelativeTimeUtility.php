@@ -6,7 +6,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class RelativeTimeUtility
 {
-    public static function getRelativeTimeString(\DateInterval $interval, string $extensionName, string $precision, int $limitUnits = 99): string
+    public static function getRelativeTimeString(\DateInterval $interval, string $extensionName, string $precision, int $limitUnits = 99, bool $wrapInPreposition = false): string
     {
         $messageParts = [];
         $timeunits = [
@@ -43,7 +43,7 @@ class RelativeTimeUtility
                 // reference is just now
                 $key = 'now';
             } elseif ($interval->invert) {
-                // reference is in the future but less than the provided precision
+                // reference is in the past but less than the provided precision
                 $key = 'recently';
             } else {
                 // reference is in the future but less than the provided precision
@@ -52,7 +52,19 @@ class RelativeTimeUtility
             // "today", "now", "recently" and "soon" are returned without wrapping them in "since" or "until"
             return LocalizationUtility::translate('timespan.' . $key, $extensionName);
         }
-        return implode(' ', $messageParts);
+        $timeString = implode(' ', $messageParts);
+        if ($wrapInPreposition) {
+            $key = ($interval->invert ? 'since' : 'until');
+            $timeString = LocalizationUtility::translate('timespan.' . $key, $extensionName, [$timeString]);
+        }
+        return $timeString;
+    }
+
+    public static function createDateIntervalFromSeconds(int $seconds): \DateInterval
+    {
+        $reference = new \DateTime();
+        $reference->add(\DateInterval::createFromDateString($seconds . ' seconds'));
+        return (new \DateTime())->diff($reference);
     }
 
     protected static function dateIntervalIsNull(\DateInterval $dateInterval): bool

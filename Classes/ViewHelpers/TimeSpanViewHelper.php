@@ -55,8 +55,6 @@ class TimeSpanViewHelper extends AbstractViewHelper
             return '';
         }
         $difference = $now->diff($reference);
-        $relativeTimeString = RelativeTimeUtility::getRelativeTimeString($difference, $this->arguments['extensionName'], $this->arguments['precision'], $this->arguments['limitUnits']);
-        $key = ($now > $reference ? 'since' : 'until');
-        return LocalizationUtility::translate('timespan.' . $key, $this->arguments['extensionName'], [$relativeTimeString]);
+        return RelativeTimeUtility::getRelativeTimeString($difference, $this->arguments['extensionName'], $this->arguments['precision'], $this->arguments['limitUnits'], true);
     }
 }
