@@ -3,7 +3,7 @@ namespace Smichaelsen\FluidViewHelperTimespan\ViewHelpers;
 
 use Smichaelsen\FluidViewHelperTimespan\RelativeTimeUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class TimeSpanViewHelper
