@@ -1,6 +1,10 @@
 {
 	"name": "smichaelsen/fluid-viewhelper-timespan",
 	"description": "TimeSpanViewHelper for Fluid",
+	"require": {
+		"php": "^7.4",
+		"typo3/cms-core": "^10.4",
+	},
 	"autoload": {
 		"psr-4": {
 			"Smichaelsen\\FluidViewHelperTimespan\\": "Classes/"
