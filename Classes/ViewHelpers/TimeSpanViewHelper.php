@@ -1,8 +1,8 @@
 <?php
+
 namespace Smichaelsen\FluidViewHelperTimespan\ViewHelpers;
 
-use Smichaelsen\FluidViewHelperTimespan\RelativeTimeUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Smichaelsen\FluidViewHelperTimespan\RelativeTimeService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -33,18 +33,21 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 class TimeSpanViewHelper extends AbstractViewHelper
 {
-    public function initializeArguments()
+    public function __construct(
+        private readonly RelativeTimeService $relativeTimeService,
+    ) {}
+
+    public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('extensionName', 'string', 'By default labels will be loaded from the request\'s current extension. Can be overwritten by this attribute.', FALSE);
-        $this->registerArgument('limitUnits', 'integer', 'Limit the amount of displayed units', FALSE, 99);
-        $this->registerArgument('precision', 'string', 'By default the timespan will be diplayed accurately down to the second. Provide "year", "month", "day", "hour" or "minute" to lower the precision.', FALSE, 'second');
-        $this->registerArgument('reference', \DateTime::class, 'The reference time, can also be passed as child content', FALSE);
+        $this->registerArgument('extensionName', 'string', 'Load labels from this extension', true);
+        $this->registerArgument('limitUnits', 'integer', 'Limit the amount of displayed units', false, 99);
+        $this->registerArgument('precision', 'string', 'By default the timespan will be diplayed accurately down to the second. Provide "year", "month", "day", "hour" or "minute" to lower the precision.', false, 'second');
+        $this->registerArgument('reference', \DateTime::class, 'The reference time, can also be passed as child content');
     }
 
     public function render(): string
     {
-        $this->arguments['extensionName'] = $this->arguments['extensionName'] ?: $this->controllerContext->getRequest()->getControllerExtensionName();
         $now = new \DateTime();
         /** @var \DateTime $reference */
         $reference = $this->arguments['reference'] ?: $this->renderChildren();
@@ -55,6 +58,12 @@ class TimeSpanViewHelper extends AbstractViewHelper
             return '';
         }
         $difference = $now->diff($reference);
-        return RelativeTimeUtility::getRelativeTimeString($difference, $this->arguments['extensionName'], $this->arguments['precision'], $this->arguments['limitUnits'], true);
+        return $this->relativeTimeService->getRelativeTimeString(
+            $difference,
+            $this->arguments['extensionName'],
+            $this->arguments['precision'],
+            $this->arguments['limitUnits'],
+            true
+        );
     }
 }

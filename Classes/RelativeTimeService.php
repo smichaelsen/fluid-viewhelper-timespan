@@ -1,12 +1,14 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Smichaelsen\FluidViewHelperTimespan;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class RelativeTimeUtility
+class RelativeTimeService
 {
-    public static function getRelativeTimeString(\DateInterval $interval, string $extensionName, string $precision, int $limitUnits = 99, bool $wrapInPreposition = false): string
+    public function getRelativeTimeString(\DateInterval $interval, string $extensionName, string $precision, int $limitUnits = 99, bool $wrapInPreposition = false): string
     {
         $messageParts = [];
         $timeunits = [
@@ -35,11 +37,11 @@ class RelativeTimeUtility
                 break;
             }
         }
-        if (count($messageParts) === 0) {
+        if ($messageParts === []) {
             if ($precision === 'day') {
                 // reference less than a day, but "day" is the precision
                 $key = 'today';
-            } elseif (self::dateIntervalIsNull($interval)) {
+            } elseif ($this->dateIntervalIsNull($interval)) {
                 // reference is just now
                 $key = 'now';
             } elseif ($interval->invert) {
@@ -60,14 +62,14 @@ class RelativeTimeUtility
         return $timeString;
     }
 
-    public static function createDateIntervalFromSeconds(int $seconds): \DateInterval
+    public function createDateIntervalFromSeconds(int $seconds): \DateInterval
     {
         $reference = new \DateTime();
         $reference->add(\DateInterval::createFromDateString($seconds . ' seconds'));
         return (new \DateTime())->diff($reference);
     }
 
-    protected static function dateIntervalIsNull(\DateInterval $dateInterval): bool
+    protected function dateIntervalIsNull(\DateInterval $dateInterval): bool
     {
         return (new \DateTime()) === (new \DateTime())->add($dateInterval);
     }
