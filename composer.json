@@ -1,13 +1,19 @@
 {
 	"name": "smichaelsen/fluid-viewhelper-timespan",
+	"type": "typo3-cms-extension",
 	"description": "TimeSpanViewHelper for Fluid",
 	"require": {
-		"php": "^7.4 || ^8.0",
-		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4"
+		"php": "^8.0",
+		"typo3/cms-core": "^12.4 || ^13.4"
 	},
 	"autoload": {
 		"psr-4": {
 			"Smichaelsen\\FluidViewHelperTimespan\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "fluid_viewhelper_timespan"
 		}
 	}
 }
