@@ -49,7 +49,6 @@ class TimeSpanViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $now = new \DateTime();
-        /** @var \DateTime $reference */
         $reference = $this->arguments['reference'] ?: $this->renderChildren();
         if (is_numeric($reference)) {
             $reference = \DateTime::createFromFormat('U', $reference);
